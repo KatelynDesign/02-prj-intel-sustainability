@@ -1,1 +1,51 @@
 /* Add your CSS here */
+
+/* Make the main heading and sub text bigger */
+h1 {
+  font-size: 2.5em; /* Bigger main heading */
+  border-bottom: 3px solid #0071c5; /* Add a blue line under the main title */
+  padding-bottom: 8px; /* Space between text and line */
+  margin-bottom: 18px; /* Space below the line */
+}
+
+header p {
+  font-size: 1.5em; /* Bigger sub text, but smaller than main heading */
+}
+
+/* Card transition: fade in and slide up */
+.card-text {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(20px); /* Start slightly lower */
+  transition:
+    max-height 0.5s ease,
+    opacity 0.5s ease,
+    transform 0.5s ease;
+  margin: 0;
+  padding: 0 0;
+}
+
+.card-img-hover:hover + .card-text,
+.card-img-hover:focus + .card-text {
+  max-height: 200px;
+  opacity: 1;
+  transform: translateY(0); /* Slide up into place */
+  margin-top: 10px;
+  padding: 0 0 10px 0;
+}
+
+/* Place the cards in a row using flexbox */
+section {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 30px 0;
+  background-color: #fff;
+  color: #222;
+  max-width: 1430px; /* Limit the width of the card section */
+  margin: 0 auto;    /* Center the section on the page */
+}
