@@ -138,7 +138,7 @@
       margin-bottom: 10px;
       cursor: pointer; /* Show pointer on hover */
     }
-    /* Hide the paragraph by default */
+    /* Hide the paragraph by default, but allow enough space for transition on small screens */
     .card-text {
       max-height: 0;
       overflow: hidden;
@@ -150,104 +150,53 @@
     /* Show the paragraph when hovering over the image */
     .card-img-hover:hover + .card-text,
     .card-img-hover:focus + .card-text {
-      max-height: 200px; /* Enough space for the text */
+      max-height: 200px;
       opacity: 1;
       margin-top: 10px;
       padding: 0 0 10px 0;
     }
-    /* Style the instruction text at the bottom */
-    body > p {
-      text-align: center;
-      color: #003057; /* Darker blue, matches Intel's aesthetics */
-      margin: 30px 0 10px 0;
-      font-size: 1.1em;
-      letter-spacing: 0.5px;
-      line-height: 1.5;
-      max-width: 98vw;
-      position: relative;
-      left: 0;
-      right: 0;
-    }
 
-    /* Flexbox horizontal scroll for cards */
+    /* Horizontal scroll for cards on big screens */
     section.card-scroll {
-      display: flex;
-      flex-direction: row;
-      gap: 20px;
-      overflow-x: auto; /* Enable horizontal scrolling */
+      display: flex; /* Use flexbox for horizontal layout */
+      flex-direction: row; /* Cards in a row */
+      gap: 0px; /* Remove gap between cards */
+      overflow-x: auto; /* Enable horizontal scroll navigation */
       scroll-snap-type: x mandatory; /* Snap to cards when scrolling */
       padding: 30px 0 30px 12px;
-      max-width: 1240px; /* 4 cards * 300px + 3 gaps * 20px */
+      max-width: 1240px; /* Show 4 cards at a time (4*300px + 3*20px) */
       margin: 0 auto;
       box-sizing: border-box;
     }
     section.card-scroll > div {
-      flex: 0 0 300px;
+      /* Add a small right margin except for the last card to create space between cards */
+      margin-right: 20px;
+      flex: 0 0 300px; /* Each card is 300px wide, does not shrink or grow */
       min-width: 300px;
       max-width: 300px;
       scroll-snap-align: start;
-      /* Intel-inspired card design */
-      background: linear-gradient(120deg, #fafdff 80%, #e6f4fb 100%);
-      border: 2px solid #c6d5e1;
-      border-radius: 20px;
-      padding: 26px 20px 22px 20px;
-      box-shadow: 0 4px 18px 0 rgba(0,113,197,0.09), 0 1.5px 6px 0 rgba(0,0,0,0.04);
-      transition:
-        box-shadow 0.25s cubic-bezier(.4,2,.6,1),
-        border-color 0.18s,
-        transform 0.25s cubic-bezier(.4,2,.6,1),
-        background 0.3s,
-        filter 0.3s;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      flex-shrink: 0;
+      /* ...existing code... */
+    }
+    /* Remove right margin from the last card to avoid extra space at the end */
+    section.card-scroll > div:last-child {
       margin-right: 0;
-      position: relative;
-      overflow: hidden;
-      /* Add a subtle blue glow for Intel feel */
-      outline: 2px solid transparent;
-      outline-offset: 0;
     }
-    /* Add a subtle blue accent bar on the left of each card */
-    section.card-scroll > div::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 18px;
-      width: 6px;
-      height: 60px;
-      border-radius: 4px;
-      background: linear-gradient(180deg, #0071c5 60%, #00b8fc 100%);
-      opacity: 0.18;
-      z-index: 1;
+    /* ...existing code... */
+    /* Show only 4 cards at a time on big screens */
+    @media (min-width: 1101px) {
+      section.card-scroll {
+        max-width: 1240px;
+        overflow-x: auto;
+      }
     }
-    /* Card hover/focus effect: dynamic pop, shadow, border, and glow */
-    section.card-scroll > div:hover,
-    section.card-scroll > div:focus-within {
-      box-shadow: 0 16px 36px 0 rgba(0,113,197,0.25), 0 8px 32px 0 rgba(0,0,0,0.13);
-      border-color: #0071c5;
-      transform: translateY(-12px) scale(1.06) rotate(1.5deg);
-      background: linear-gradient(120deg, #fafdff 80%, #e6f4fb 100%);
-      filter: brightness(1.05) drop-shadow(0 0 18px #00b8fc44);
-      outline: 2px solid #00b8fc;
-      outline-offset: 2px;
-      transition:
-        box-shadow 0.25s cubic-bezier(.4,2,.6,1),
-        border-color 0.18s,
-        transform 0.25s cubic-bezier(.4,2,.6,1),
-        background 0.3s,
-        filter 0.3s,
-        outline 0.2s;
-    }
-
-    /* Responsive: show fewer cards on smaller screens */
-    @media (max-width: 1100px) {
+    /* Show 3 cards at a time on medium-large screens */
+    @media (max-width: 1100px) and (min-width: 901px) {
       section.card-scroll {
         max-width: 940px; /* 3 cards */
       }
     }
-    @media (max-width: 900px) {
+    /* Show 2 cards at a time on medium screens */
+    @media (max-width: 900px) and (min-width: 701px) {
       section.card-scroll {
         max-width: 620px; /* 2 cards */
       }
@@ -256,24 +205,68 @@
       section.card-scroll {
         flex-direction: column;
         max-width: 98vw;
-        gap: 0; /* Remove flex gap, use margin for card spacing */
+        gap: 32px; /* Add more space between cards so they can stretch down */
         padding: 12px 0;
         overflow-x: visible;
         align-items: center;
       }
       section.card-scroll > div {
-        /* Make cards smaller and centered on small screens */
         min-width: 0;
         max-width: 77vw;
         width: 77vw;
         padding: 12px 6px 10px 6px;
         margin-left: auto;
         margin-right: auto;
-        margin-bottom: 18px; /* Add space between stacked cards */
+        margin-bottom: 32px; /* Add more space below each card */
+        /* Add transition for height and box-shadow */
+        transition:
+          box-shadow 0.25s cubic-bezier(.4,2,.6,1),
+          border-color 0.18s,
+          transform 0.25s cubic-bezier(.4,2,.6,1),
+          background 0.3s,
+          filter 0.3s,
+          outline 0.2s,
+          margin-bottom 0.25s,
+          min-height 0.5s,
+          max-height 0.5s;
+        min-height: 340px; /* Make card taller so it sits behind the text */
+        height: auto;
+        max-height: none;
+        overflow: visible;
+        position: relative;
+        margin-bottom: 32px;
       }
       /* Remove bottom margin from the last card */
       section.card-scroll > div:last-child {
         margin-bottom: 0;
+      }
+      /* When card is hovered/focused, stretch card down to fit all text */
+      section.card-scroll > div:hover,
+      section.card-scroll > div:focus-within {
+        box-shadow: 0 16px 36px 0 rgba(0,113,197,0.25), 0 8px 32px 0 rgba(0,0,0,0.13);
+        border-color: #0071c5;
+        transform: translateY(-10px) scale(1.04) rotate(1deg);
+        background: linear-gradient(120deg, #fafdff 80%, #e6f4fb 100%);
+        filter: brightness(1.05) drop-shadow(0 0 18px #00b8fc44);
+        outline: 2px solid #00b8fc;
+        outline-offset: 2px;
+        z-index: 2;
+        margin-bottom: 56px;
+        min-height: 380px; /* Stretch more on hover to fit all text */
+        height: auto;
+        max-height: 2000px;
+        margin-bottom: 56px;
+        overflow: visible;
+        z-index: 2;
+      }
+      /* Make sure the card text can expand fully on small screens */
+      .card-img-hover:hover + .card-text,
+      .card-img-hover:focus + .card-text {
+        max-height: 2000px; /* Large enough for all text */
+        opacity: 1;
+        margin-top: 10px;
+        padding: 0 0 10px 0;
+        overflow: hidden;
       }
       /* Main heading and subtext adjustments for small screens */
       #main-heading {
