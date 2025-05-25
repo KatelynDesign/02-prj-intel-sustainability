@@ -160,6 +160,132 @@
       text-align: center;
       color: #003057; /* Darker blue, matches Intel's aesthetics */
       margin: 30px 0 10px 0;
+      font-size: 1.1em;
+      letter-spacing: 0.5px;
+      line-height: 1.5;
+      max-width: 98vw;
+      position: relative;
+      left: 0;
+      right: 0;
+    }
+
+    /* Flexbox horizontal scroll for cards */
+    section.card-scroll {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+      overflow-x: auto; /* Enable horizontal scrolling */
+      scroll-snap-type: x mandatory; /* Snap to cards when scrolling */
+      padding: 30px 0 30px 12px;
+      max-width: 1240px; /* 4 cards * 300px + 3 gaps * 20px */
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+    section.card-scroll > div {
+      flex: 0 0 300px;
+      min-width: 300px;
+      max-width: 300px;
+      scroll-snap-align: start;
+      /* Intel-inspired card design */
+      background: linear-gradient(120deg, #fafdff 80%, #e6f4fb 100%);
+      border: 2px solid #c6d5e1;
+      border-radius: 20px;
+      padding: 26px 20px 22px 20px;
+      box-shadow: 0 4px 18px 0 rgba(0,113,197,0.09), 0 1.5px 6px 0 rgba(0,0,0,0.04);
+      transition:
+        box-shadow 0.25s cubic-bezier(.4,2,.6,1),
+        border-color 0.18s,
+        transform 0.25s cubic-bezier(.4,2,.6,1),
+        background 0.3s,
+        filter 0.3s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+      margin-right: 0;
+      position: relative;
+      overflow: hidden;
+      /* Add a subtle blue glow for Intel feel */
+      outline: 2px solid transparent;
+      outline-offset: 0;
+    }
+    /* Add a subtle blue accent bar on the left of each card */
+    section.card-scroll > div::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 18px;
+      width: 6px;
+      height: 60px;
+      border-radius: 4px;
+      background: linear-gradient(180deg, #0071c5 60%, #00b8fc 100%);
+      opacity: 0.18;
+      z-index: 1;
+    }
+    /* Card hover/focus effect: dynamic pop, shadow, border, and glow */
+    section.card-scroll > div:hover,
+    section.card-scroll > div:focus-within {
+      box-shadow: 0 16px 36px 0 rgba(0,113,197,0.25), 0 8px 32px 0 rgba(0,0,0,0.13);
+      border-color: #0071c5;
+      transform: translateY(-12px) scale(1.06) rotate(1.5deg);
+      background: linear-gradient(120deg, #fafdff 80%, #e6f4fb 100%);
+      filter: brightness(1.05) drop-shadow(0 0 18px #00b8fc44);
+      outline: 2px solid #00b8fc;
+      outline-offset: 2px;
+      transition:
+        box-shadow 0.25s cubic-bezier(.4,2,.6,1),
+        border-color 0.18s,
+        transform 0.25s cubic-bezier(.4,2,.6,1),
+        background 0.3s,
+        filter 0.3s,
+        outline 0.2s;
+    }
+
+    /* Responsive: show fewer cards on smaller screens */
+    @media (max-width: 1100px) {
+      section.card-scroll {
+        max-width: 940px; /* 3 cards */
+      }
+    }
+    @media (max-width: 900px) {
+      section.card-scroll {
+        max-width: 620px; /* 2 cards */
+      }
+    }
+    @media (max-width: 700px) {
+      section.card-scroll {
+        flex-direction: column;
+        max-width: 98vw;
+        gap: 0; /* Remove flex gap, use margin for card spacing */
+        padding: 12px 0;
+        overflow-x: visible;
+        align-items: center;
+      }
+      section.card-scroll > div {
+        /* Make cards smaller and centered on small screens */
+        min-width: 0;
+        max-width: 77vw;
+        width: 77vw;
+        padding: 12px 6px 10px 6px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 18px; /* Add space between stacked cards */
+      }
+      /* Remove bottom margin from the last card */
+      section.card-scroll > div:last-child {
+        margin-bottom: 0;
+      }
+      /* Main heading and subtext adjustments for small screens */
+      #main-heading {
+        margin-bottom: 22px !important; /* Add more space below heading */
+      }
+      #main-subtext {
+        margin-top: 18px !important; /* Add space above subtext */
+      }
+      body > p {
+        margin: 24px 0 10px 0; /* Adjust margin for instruction text */
+        font-size: 1em; /* Slightly smaller font size */
+      }
     }
   </style>
 </head>
@@ -170,10 +296,11 @@
     <div>
       <img src="img/intel-header-logo.svg" alt="Intel Logo" />
       <div class="hero-text">
-        <h1 style="text-transform: uppercase; font-size:2.3em;">
-          Sustainability Through the Ages
+        <!-- Main heading: one line on large screens, split for small screens -->
+        <h1 class="responsive-heading" id="main-heading" style="text-transform: uppercase; font-size:2.6em; margin: 0 auto 10px auto; text-align: center; letter-spacing: 1px;">
+          Sustainability Through The Ages
         </h1>
-        <p style="margin-top: 32px; font-size:1em;">
+        <p id="main-subtext" style="margin-top: 24px; font-size:1em; text-align: center; line-height: 1.7; max-width: 600px; margin-left: auto; margin-right: auto;">
           Explore Intel's journey through time, discovering how our commitment
           to innovation has shaped a more sustainable future for technology 
           and our planet.
@@ -183,7 +310,7 @@
   </header>
 
   <!-- Timeline Cards Section -->
-  <section>
+  <section class="card-scroll">
 
     <!-- Card 1: 1968 -->
     <div>
@@ -269,7 +396,12 @@
     <div>
       <h2>2022</h2>
       <h3>Net-Zero By 2040</h3>
-      <img src="https://placehold.co/250x100" alt="Placeholder Image" class="card-img-hover" />
+      <!-- Simple SVG illustration of a globe with a check mark to show net-zero goal -->
+      <img 
+        src="data:image/svg+xml;utf8,<svg width='250' height='100' xmlns='http://www.w3.org/2000/svg'><rect width='250' height='100' fill='%23e0eaf3'/><circle cx='90' cy='55' r='30' fill='%2300b8fc' stroke='%230071c5' stroke-width='3'/><ellipse cx='90' cy='55' rx='22' ry='10' fill='white' opacity='0.4'/><ellipse cx='90' cy='55' rx='10' ry='22' fill='white' opacity='0.3'/><polyline points='140,70 155,85 180,55' fill='none' stroke='%2336b37e' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/><text x='125' y='95' font-size='14' fill='%233e7cb6' text-anchor='middle' font-family='Arial'>Net-Zero Goal</text></svg>" 
+        alt="Globe with check mark for net-zero emissions" 
+        class="card-img-hover" 
+      />
       <p class="card-text">
         Intel announces its commitment to achieve net-zero greenhouse 
         gas emissions (Scope 1 and 2) across its global operations 
@@ -281,7 +413,12 @@
     <div>
       <h2>2023</h2>
       <h3>Renewable Electricity</h3>
-      <img src="https://placehold.co/250x100" alt="Placeholder Image" class="card-img-hover" />
+      <!-- SVG illustration of a sun and wind turbine for renewable electricity -->
+      <img 
+        src="data:image/svg+xml;utf8,<svg width='250' height='100' xmlns='http://www.w3.org/2000/svg'><rect width='250' height='100' fill='%23e0eaf3'/><circle cx='60' cy='40' r='18' fill='%23ffe066' stroke='%23ffd700' stroke-width='3'/><rect x='140' y='60' width='8' height='30' fill='%239cc3e6'/><polygon points='144,60 134,80 154,80' fill='%2300b8fc'/><line x1='144' y1='60' x2='144' y2='40' stroke='%230071c5' stroke-width='3'/><line x1='144' y1='60' x2='130' y2='70' stroke='%230071c5' stroke-width='3'/><line x1='144' y1='60' x2='158' y2='70' stroke='%230071c5' stroke-width='3'/><text x='125' y='95' font-size='14' fill='%233e7cb6' text-anchor='middle' font-family='Arial'>99% Renewable</text></svg>" 
+        alt="Sun and wind turbine for renewable electricity" 
+        class="card-img-hover" 
+      />
       <p class="card-text">
         The company achieves 99% renewable electricity usage worldwide, 
         helping to drastically lower carbon emissions and driving progress 
@@ -293,7 +430,12 @@
     <div>
       <h2>2024</h2>
       <h3>Sustainability Summit</h3>
-      <img src="https://placehold.co/250x100" alt="Placeholder Image" class="card-img-hover" />
+      <!-- SVG illustration of people around a table with a leaf, representing a summit on sustainability -->
+      <img 
+        src="data:image/svg+xml;utf8,<svg width='250' height='100' xmlns='http://www.w3.org/2000/svg'><rect width='250' height='100' fill='%23e0eaf3'/><ellipse cx='125' cy='70' rx='60' ry='18' fill='%239cc3e6'/><circle cx='85' cy='60' r='10' fill='%2300b8fc'/><circle cx='125' cy='55' r='10' fill='%234a90e2'/><circle cx='165' cy='60' r='10' fill='%2377aaff'/><ellipse cx='125' cy='70' rx='18' ry='7' fill='%23e0f7e9'/><path d='M125 70 Q130 60 135 70 Q130 65 125 70' fill='%2336b37e'/><text x='125' y='95' font-size='14' fill='%233e7cb6' text-anchor='middle' font-family='Arial'>Summit 2024</text></svg>" 
+        alt="People at a table with a leaf for sustainability summit" 
+        class="card-img-hover" 
+      />
       <p class="card-text">
         Intel hosts its first Sustainability Summit, uniting suppliers, 
         government officials, and industry leaders to collaborate on 
@@ -301,6 +443,60 @@
       </p>
     </div>
   </section>
-  <p>Scroll to view timeline | Hover over cards to learn more!</p>
+  <!-- Bottom instruction text, always at the bottom and responsive -->
+  <p>
+    Scroll to view timeline &nbsp;|&nbsp; Hover over cards to learn more!
+  </p>
+
+  <script>
+    // Adjust main heading and subtext only for small screens
+    function adjustHeading() {
+      var heading = document.getElementById('main-heading');
+      var subtext = document.getElementById('main-subtext');
+      if (window.innerWidth <= 700) {
+        // For small screens: break lines, shrink font, center, add spacing
+        heading.innerHTML = 'Sustainability<br>Through The<br>Ages';
+        heading.style.fontSize = '1.1em';
+        heading.style.margin = '12px auto 8px auto';
+        heading.style.maxWidth = '96vw';
+        heading.style.letterSpacing = '0.5px';
+        heading.style.textAlign = 'center';
+        heading.style.lineHeight = '1.2';
+        heading.style.overflowWrap = 'break-word';
+        subtext.innerHTML = "Explore Intel's journey through time,<br><br>discovering how our commitment to innovation<br><br>has shaped a more sustainable future for technology<br><br>and our planet.";
+        subtext.style.fontSize = '0.97em';
+        subtext.style.maxWidth = '96vw';
+        subtext.style.margin = '0 auto 0 auto';
+        subtext.style.lineHeight = '1.8';
+        subtext.style.textAlign = 'center';
+        subtext.style.overflowWrap = 'break-word';
+      } else if (window.innerWidth <= 900) {
+        // For tablets and medium screens
+        heading.innerHTML = 'Sustainability<br>Through The Ages';
+        heading.style.fontSize = '1.6em';
+        heading.style.margin = '16px auto 10px auto';
+        heading.style.maxWidth = '98vw';
+        heading.style.letterSpacing = '0.7px';
+        heading.style.textAlign = 'center';
+        heading.style.lineHeight = '1.2';
+        heading.style.overflowWrap = 'break-word';
+        subtext.innerHTML = "Explore Intel's journey through time, discovering how our commitment to innovation has shaped a more sustainable future for technology and our planet.";
+        subtext.style.fontSize = '1em';
+        subtext.style.maxWidth = '98vw';
+        subtext.style.margin = '0 auto 0 auto';
+        subtext.style.lineHeight = '1.7';
+        subtext.style.textAlign = 'center';
+        subtext.style.overflowWrap = 'break-word';
+      } else {
+        // For large screens, keep original design
+        heading.innerHTML = 'Sustainability Through The Ages';
+        heading.removeAttribute('style');
+        subtext.innerHTML = "Explore Intel's journey through time, discovering how our commitment\n          to innovation has shaped a more sustainable future for technology \n          and our planet.";
+        subtext.removeAttribute('style');
+      }
+    }
+    window.addEventListener('resize', adjustHeading);
+    window.addEventListener('DOMContentLoaded', adjustHeading);
+  </script>
 </body>
 </html>
